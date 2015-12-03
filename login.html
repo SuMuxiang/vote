@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>欢迎</title>
+    <link href="css/login.css" type="text/css" rel="stylesheet">
+    <script type="text/javascript" src="js/jquery-2.1.1.min.js"></script>
+</head>
+
+<body>
+
+<div class="welcome">
+    <div class="left_bg">
+
+        <h1>欢迎</h1>
+        <div class="tabs">
+            <span class="tab sign_in active"><a href="javascript:void(0)">登录</a></span>
+            <span class="tab sign_up"><a href="javascript:void(0)">注册</a></span>
+        </div>
+
+        <div class="left_con">
+            <div class="sign_in_bg form_bg">
+                <form> <!--action="#" method="post" -->
+                    <input type="text" name="sign_in_email" id="sign_in_email" class="form_input" required="required" placeholder="邮箱"> <!-- required:文本必填，placeholder:文本框提示 -->
+                    <label for="sign_in_email">邮箱</label>
+                    <input type="password" name="sign_in_password" id="sign_in_pw" class="form_input" required="required" placeholder="密码">
+                    <label for="sign_in_pw">密码</label><!-- for 指向 id ,不是 name -->
+                    <div class="submit_bg">
+                        <input type="button" value="登录" class="submit" id="sign_in_sub">
+                        <a href="javascript:void(0)" class="more">忘记密码？</a>
+                    </div>
+                </form>
+            </div>
+
+            <div class="sign_up_bg form_bg">
+                <form> <!--action="#" method="post" -->
+                    <input type="text" name="sign_in_name" id="sign_up_name" class="form_input" required="required" placeholder="用户名">
+                    <label for="sign_in_email">用户名</label>
+                    <input type="text" name="sign_in_email" id="sign_up_email" class="form_input" required="required" placeholder="邮箱">
+                    <label for="sign_in_email">邮箱</label>
+                    <input type="password" name="sign_in_password" id="sign_up_pw" class="form_input" required="required" placeholder="密码">
+                    <label for="sign_in_pw">密码</label>
+                    <div class="submit_bg">
+                        <input type="button" value="注册" class="submit" id="sign_up_sub">
+                        <a href="javascript:void(0)" class="more">忘记密码？</a>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="right_bg"></div>
+
+</div>
+
+<script>
+    $(function(){
+
+        //登录、注册标签切换
+        $('.tabs .tab').click(function(){
+            if( $(this).hasClass('sign_in') ){
+                $('.tabs .tab').removeClass('active');
+                $(this).addClass('active');
+                $('.form_bg').hide();
+                $('.sign_in_bg').show();
+            }
+            if( $(this).hasClass('sign_up') ){
+                $('.tabs .tab').removeClass('active');
+                $(this).addClass('active');
+                $('.form_bg').hide();
+                $('.sign_up_bg').show();
+            }
+        });
+
+        //图片移动
+        $('.right_bg').mousemove(function(e){
+            var amountMovedX = ( e.pageX * -1 / 30 );
+            var amountMovedY = ( e.pageY * -1 / 9 );
+            $(this).css('background-position',amountMovedX + 'px '+amountMovedY + 'px'); //注意空格
+        });
+
+        //登录
+        $('#sign_in_sub').click(function(){
+            var $sign_in_email = $('#sign_in_email');
+            if( !check_email($sign_in_email) ){
+                $sign_in_email.css('border','1px solid red');
+            }
+            else{
+                $.ajax({
+                    url:'support/check.php',
+                    data:{case_num:1,email:$sign_in_email.val(),pw:$('#sign_in_pw').val()}, // case 1
+                    type:'POST',
+                    dataType:'text',
+                    success:function( data ){
+                        if( data == 1 ){
+                            location.href = 'index.php';
+                        }
+                        else{
+                            alert('登录失败！');
+                        }
+                    }
+                });
+            }
+
+        });
+
+        //注册
+        $('#sign_up_sub').click(function(){
+            var $sign_up_email =$('#sign_up_email');
+            if( !check_email($sign_up_email) ){
+                $sign_up_email.css('border','1px solid red');
+            }
+            else{
+                $.ajax({
+                    url:'support/check.php',
+                    data:{case_num:2,name:$('#sign_up_name').val(),email:$sign_up_email.val(),pw:$('#sign_up_pw').val()}, // csse 2
+                    type:'POST',
+                    dataType:'text',
+                    success:function( data ){
+                        if( data == 1 ){
+                            location.href = 'index.php';
+                        }
+                        else{
+                            alert('注册失败！');
+                        }
+                    }
+                })
+            }
+        });
+
+        //邮箱格式检查函数
+        function check_email( email ){
+            var reEmail = /^([\.a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(\.[a-zA-Z0-9_-])+/;
+            return( reEmail.test(email.val()) );
+        }
+
+    })
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

@@ -40,7 +40,7 @@ include_once('support/connect.php');
                     </div>
                     <div class="color_buttons">
                         <a class="color_close">收起</a>
-                        <a class="color_good">支持</a>
+                        <a class="color_good" id="<?php echo $v_o['object_id'] ?>">支持</a>
                     </div>
                     <div class="cover"></div>
                 </div>
@@ -104,7 +104,20 @@ include_once('support/connect.php');
                     .children('color_name').css({'opacity':0,'margin-left':2});*/
         });
 
-        //前五
+        // 投票
+        $(document).on('click','.color_good',function(){
+            $.ajax({
+                url:'support/check.php',
+                data:{case_num:4,object_id:$(this).attr('id')},
+                type:'POST',
+                dataType:'text',
+                success:function( data ){
+                    alert(data);
+                }
+            });
+        });
+
+        // 前五
         $('#colors_top_five').click(function(){
             $.ajax({
                 url:'support/check.php',
@@ -129,7 +142,7 @@ include_once('support/connect.php');
                             "</div>"+
                             "<div class='color_buttons'>"+
                             "<a class='color_close'>收起</a>"+
-                            "<a class='color_good'>支持</a>"+
+                            "<a class='color_good' id='"+ data[i].object_id +"'>支持</a>"+
                             "</div>"+
                             "<div class='cover'></div>"+
                             "</div>"

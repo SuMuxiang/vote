@@ -56,12 +56,24 @@ switch( $case_num ){
             $i++;
         }
 
-
         if( $num ){
             echo json_encode( $colors );
         }
         exit;
         break;
+
+    case 4: // index 投票
+
+        $object_id = $_POST['object_id'];
+
+        $sql = 'select vote_num from vote_object where object_id = '.$object_id;
+        $result = mysql_query( $sql );
+        $vote_num = mysql_fetch_array( $result ); // 取出 vote_object 的 vote_num
+        $vote_num = $num['vote_num'];
+
+
+        echo $result;
+
 
 
 
